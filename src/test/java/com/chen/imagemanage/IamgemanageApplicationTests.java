@@ -1,4 +1,4 @@
-package com.chen.iamgemanage;
+package com.chen.imagemanage;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
