@@ -2,6 +2,7 @@ package com.chen.imagemanage.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.chen.imagemanage.common.api.ApiResult;
+import com.chen.imagemanage.model.dto.LoginDTO;
 import com.chen.imagemanage.model.dto.RegisterDTO;
 import com.chen.imagemanage.model.entity.User;
 import com.chen.imagemanage.service.user.UserService;
@@ -25,12 +26,21 @@ public class UserController extends BaseController {
     public ApiResult<Map<String, Object>> register(@Valid @RequestBody RegisterDTO dto) {
         User user = userService.executeRegister(dto);
         if (ObjectUtils.isEmpty(user)) {
-            return ApiResult.failed("账号注册失败");
+            return ApiResult.failed("账号或邮箱已存在！");
         }
         Map<String, Object> map = new HashMap<>(16);
         map.put("user", user);
         return ApiResult.success(map);
     }
 
-
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public ApiResult<Map<String, String>> login(@Valid @RequestBody LoginDTO dto) {
+        String token = userService.executeLogin(dto);
+        if (ObjectUtils.isEmpty(token)) {
+            return ApiResult.failed("账号密码错误");
+        }
+        Map<String, String> map = new HashMap<>(16);
+        map.put("token", token);
+        return ApiResult.success(map, "登录成功");
+    }
 }

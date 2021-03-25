@@ -3,7 +3,7 @@ package com.chen.imagemanage.utils;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class MD5Utils {
+public class MD5Util {
 
     public static String getPwd(String pwd) {
         try {
@@ -47,7 +47,7 @@ public class MD5Utils {
 
 
 //    public static void main(String[] args) {
-//        String pwd = MD5Utils.getPwd("234");
+//        String pwd = MD5Util.getPwd("234");
 //        System.out.println(pwd);
 //    }
 
