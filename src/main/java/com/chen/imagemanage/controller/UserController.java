@@ -48,4 +48,9 @@ public class UserController extends BaseController {
         User user = userService.getUserByUsername(userName);
         return ApiResult.success(user);
     }
+
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public ApiResult<Object> logOut() {
+        return ApiResult.success(null, "注销成功");
+    }
 }
