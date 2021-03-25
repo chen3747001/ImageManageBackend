@@ -6,15 +6,14 @@ import com.chen.imagemanage.model.dto.LoginDTO;
 import com.chen.imagemanage.model.dto.RegisterDTO;
 import com.chen.imagemanage.model.entity.User;
 import com.chen.imagemanage.service.user.UserService;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.chen.imagemanage.utils.JwtUtil.USER_NAME;
 
 @RestController
 @RequestMapping("/user")
@@ -41,6 +40,12 @@ public class UserController extends BaseController {
         }
         Map<String, String> map = new HashMap<>(16);
         map.put("token", token);
-        return ApiResult.success(map, "登录成功");
+        return ApiResult.success(map, "登u录成功");
+    }
+
+    @RequestMapping(value = "/info", method = RequestMethod.GET)
+    public ApiResult<User> getUser(@RequestHeader(value = USER_NAME) String userName) {
+        User user = userService.getUserByUsername(userName);
+        return ApiResult.success(user);
     }
 }
