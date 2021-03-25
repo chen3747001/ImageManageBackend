@@ -11,3 +11,9 @@ spring:
     password: Chen160121
     url: jdbc:mysql://localhost:3306/image_manage?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=GMT%2B8
     type: com.zaxxer.hikari.HikariDataSource
+
+#让数据库查询结果在控制台输出
+logging:
+  level:
+    root: info
+    com.chen.imagemanage: debug
