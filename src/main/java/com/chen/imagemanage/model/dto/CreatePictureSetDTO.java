@@ -1,6 +1,7 @@
 package com.chen.imagemanage.model.dto;
 
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -15,4 +16,5 @@ public class CreatePictureSetDTO {
 
     @NotBlank(message = "可见范围不能为空")
     private String useRange;
+
 }
