@@ -2,6 +2,7 @@ package com.chen.imagemanage.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.chen.imagemanage.common.api.ApiResult;
 import com.chen.imagemanage.model.dto.CreatePictureSetDTO;
 import com.chen.imagemanage.model.entity.PictureSet;
@@ -39,6 +40,7 @@ public class PictureSetController {
                 .name(dto.getName())
                 .owner(userName)
                 .useRange(dto.getUseRange())
+                .avatar("none")
                 .build();
 
         PictureSet result = pictureSetService.create(pictureSet);
@@ -54,6 +56,17 @@ public class PictureSetController {
     @RequestMapping(value = "/mySet", method = RequestMethod.GET)
     public ApiResult<List<PictureSet>> showMyPictureSet(@RequestHeader(value = USER_NAME) String userName) {
         List<PictureSet> result = pictureSetService.showMySet(userName);
+        return ApiResult.success(result);
+    }
+
+    //展示属于我的数据集
+    @RequestMapping(value = "/mySetTest", method = RequestMethod.GET)
+    public ApiResult<Page<PictureSet>> showMyPictureSetTest(
+            @RequestParam(value = "tab", defaultValue = "latest") String tab,
+            @RequestParam(value = "pageNo", defaultValue = "1")  Integer pageNo,
+            @RequestParam(value = "size", defaultValue = "10") Integer pageSize,
+            @RequestHeader(value = USER_NAME) String userName) {
+        Page<PictureSet> result = pictureSetService.getMyList(new Page<>(pageNo, pageSize), tab,userName);
         return ApiResult.success(result);
     }
 

@@ -44,6 +44,7 @@ public class PictureShowController {
         byte[] b = new byte[picInput.available()];
         picInput.read(b);
 
+        picInput.close();
         /**
          * 重要：
          *  由于json无法传送byte[] 数据，所以使用base64 将byte[]转化为String 进行传输

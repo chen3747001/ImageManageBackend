@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.chen.imagemanage.mapper.PictureSetMapper">
+    <resultMap id="PictureSetVO" type="com.chen.imagemanage.model.entity.PictureSet">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="owner" property="owner"/>
+        <result column="create_time" property="createTime"/>
+        <result column="amend_time" property="amendTime"/>
+        <result column="amountPicture" property="amountPicture"/>
+        <result column="size" property="size"/>
+        <result column="avatar" property="avatar"/>
+        <result column="useRange" property="useRange"/>
+        <result column="browse" property="browse"/>
+    </resultMap>
+
+    <select id="selectListAndPage" resultMap="PictureSetVO">
+        SELECT *
+        FROM pictureset
+        where owner=#{ownerName}
+
+
+            <if test="tab == 'hot'">
+                order by browse desc
+            </if>
+            <if test="tab == 'time'">
+                order by create_time desc
+            </if>
+
+
+    </select>
+</mapper>

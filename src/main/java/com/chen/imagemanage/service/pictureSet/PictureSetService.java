@@ -1,5 +1,6 @@
 package com.chen.imagemanage.service.pictureSet;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.chen.imagemanage.model.entity.PictureSet;
 
@@ -12,4 +13,7 @@ public interface PictureSetService extends IService<PictureSet> {
 
     //展示我的数据集(返回数据类型为数据库表类型)
     List<PictureSet> showMySet(String owner);
+
+    //分页展示我的数据集
+    Page<PictureSet> getMyList(Page<PictureSet> page, String tab,String ownerName);
 }

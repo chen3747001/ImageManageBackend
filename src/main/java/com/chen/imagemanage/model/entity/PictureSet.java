@@ -74,4 +74,10 @@ public class PictureSet implements Serializable {
     @TableField(value = "use_range")
     private String useRange;
 
+    /**
+     * 浏览量
+     */
+    @TableField(value = "browse")
+    private Integer browse;
+
 }
