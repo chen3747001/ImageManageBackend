@@ -14,6 +14,19 @@
         <result column="browse" property="browse"/>
     </resultMap>
 
+    <resultMap id="PictureSet" type="com.chen.imagemanage.model.entity.PictureSet">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="owner" property="owner"/>
+        <result column="create_time" property="createTime"/>
+        <result column="amend_time" property="amendTime"/>
+        <result column="amountPicture" property="amountPicture"/>
+        <result column="size" property="size"/>
+        <result column="avatar" property="avatar"/>
+        <result column="useRange" property="useRange"/>
+        <result column="browse" property="browse"/>
+    </resultMap>
+
     <select id="selectListAndPage" resultMap="PictureSetVO">
         SELECT *
         FROM pictureset
@@ -29,4 +42,11 @@
 
 
     </select>
+
+    <update id="uploadPicture">
+        update pictureset
+        set amend_time=#{amendTime},amount_picture=#{amountPicture},size=#{size}
+        where name=#{name}
+
+    </update>
 </mapper>

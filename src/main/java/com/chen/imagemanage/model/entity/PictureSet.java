@@ -58,6 +58,7 @@ public class PictureSet implements Serializable {
 
     /**
      * 数据总大小
+     * b为单位
      */
     @TableField(value = "size")
     private Double size;

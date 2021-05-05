@@ -2,3 +2,8 @@ spring:
   profiles:
     active: dev
 
+  servlet:
+    multipart:
+      max-request-size: 200MB
+      max-file-size: 200MB
+
