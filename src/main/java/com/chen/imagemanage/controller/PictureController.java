@@ -46,7 +46,7 @@ public class PictureController {
     //获得对应数据集的所有图片的信息
     @RequestMapping(value = "/getPictureInformation/{name}", method = RequestMethod.GET)
     private ApiResult<List<Picture>> getPictureInformation(@PathVariable String name){
-        System.out.println("qing qiu");
+//        System.out.println("qing qiu");
         return ApiResult.success(pictureService.getPicInformation(name));
     }
 

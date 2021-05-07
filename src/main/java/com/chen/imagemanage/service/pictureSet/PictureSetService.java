@@ -26,4 +26,5 @@ public interface PictureSetService extends IService<PictureSet> {
 
     //删除数据时修改对应数据集信息
     boolean deletePicture(String name, Date amendTime, Integer amountPicture, Double size);
+
 }

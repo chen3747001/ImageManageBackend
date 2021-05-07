@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.chen.imagemanage.common.api.ApiResult;
 import com.chen.imagemanage.model.dto.CreatePictureSetDTO;
+import com.chen.imagemanage.model.entity.Picture;
 import com.chen.imagemanage.model.entity.PictureSet;
 import com.chen.imagemanage.model.vo.PictureVO;
 import com.chen.imagemanage.service.pictureSet.PictureSetService;
@@ -70,4 +71,12 @@ public class PictureSetController {
         return ApiResult.success(result);
     }
 
+    //获得对应名称的数据集的信息
+    @GetMapping("/getSetInformationByName")
+    public ApiResult<PictureSet> getSetInformationByName(@RequestParam(value = "setName")String setName){
+        System.out.println("查数据集信息 "+setName);
+        PictureSet result=pictureSetService.getMessageByName(setName);
+        System.out.println(result.getName()+" == "+result.getOwner()+" = "+result.getCreateTime());
+        return ApiResult.success(result);
+    }
 }

@@ -68,8 +68,7 @@ public class PictureSetServiceImpl extends ServiceImpl<PictureSetMapper, Picture
         //查询是否有相同名称的数据集
         LambdaQueryWrapper<PictureSet> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(PictureSet::getName,name);
-        PictureSet data = baseMapper.selectOne(wrapper);
-        return data;
+        return baseMapper.selectOne(wrapper);
     }
 
     //上传数据时修改对应数据集的信息
@@ -83,4 +82,5 @@ public class PictureSetServiceImpl extends ServiceImpl<PictureSetMapper, Picture
     public boolean deletePicture(String name, Date amendTime, Integer amountPicture, Double size){
         return pictureSetMapper.uploadPicture(name,amendTime,amountPicture,size);
     }
+
 }
