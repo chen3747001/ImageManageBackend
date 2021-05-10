@@ -38,6 +38,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         List<String> protectedPaths = new ArrayList<String>();
         protectedPaths.add("/user/info");
         protectedPaths.add("/pictureSet/*");
+//        protectedPaths.add("/pictureSet/show");
+//        protectedPaths.add("/pictureSet/create");
+//        protectedPaths.add("/pictureSet/mySet");
+//        protectedPaths.add("/pictureSet/mySetTest");
+//        protectedPaths.add("/pictureSet/getSetInformationByName");
+
         protectedPaths.add("/post/create");
         protectedPaths.add("/post/update");
         protectedPaths.add("/post/delete/*");
