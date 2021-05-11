@@ -14,6 +14,7 @@ import com.chen.imagemanage.model.entity.PictureSet;
 import com.chen.imagemanage.model.vo.PictureVO;
 import com.chen.imagemanage.service.picture.PictureService;
 import com.chen.imagemanage.service.pictureSet.PictureSetService;
+import com.chen.imagemanage.service.user.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -42,6 +43,8 @@ public class PictureController {
     private PictureSetService pictureSetService;
     @Resource
     private PictureService pictureService;
+    @Resource
+    private UserService userService;
 
     //获得对应数据集的所有图片的信息
     @RequestMapping(value = "/getPictureInformation/{name}", method = RequestMethod.GET)
@@ -106,7 +109,7 @@ public class PictureController {
         //图片的名称
         String location = path;
         //没有数据时使用的图片
-        String location_temp="wolf.png";
+        String location_temp="add.png";
         //如果该图片路径存在，就使用该路径，否则使用默认路径
         if(path==null || path.length()==0 || path.equals("none")){
             location=location_temp;
@@ -259,4 +262,51 @@ public class PictureController {
         return ApiResult.success(null, "上传成功");
     }
 
+    //修改头像
+    @PostMapping("/updateAvatar")
+    public ApiResult<Object> updateAvatar(@RequestPart("files") MultipartFile files,@RequestPart("name") String name,@RequestPart("kind") String kind,@RequestPart("oldAvatar") String oldAvatar) throws IOException {
+        System.out.println("修改头像开始，上传图片"+name+kind+"====="+files.getName()+files.getSize()+files.getOriginalFilename()+" oldAvatar is "+oldAvatar);
+
+        //判断文件是否为空
+        if(files.getSize()==0){
+            return ApiResult.failed("传输文件为空");
+        }
+        //获得日期格式化数据
+        SimpleDateFormat sdf = new SimpleDateFormat("-yyyy-MM-dd-hh-mm-ss");
+        Date time=new Date();
+        String format = sdf.format(time);
+
+        String path="F:\\ImageManage\\data\\avatar\\";
+        String oldName=files.getOriginalFilename();
+        String newName=name+format+oldName.substring(oldName.lastIndexOf("."));
+        /*
+        *下载文件
+        * */
+        files.transferTo(new File(path,newName));
+
+       /*
+       * 修改数据库中的信息
+       */
+        userService.setAvatar(name,newName);
+
+        /*
+        * 如果图片不是add.png
+        * 那就删除原头像
+        * */
+        File deleteFile=new File(path,oldAvatar);
+        if(!oldAvatar.equals("add.png")){
+            if(deleteFile.isFile() && deleteFile.exists()) {
+                try {
+                    deleteFile.delete();
+                } catch (Exception e) {
+                    log.warn("删除文件失败");
+                }
+            }
+            else{
+                return ApiResult.failed("删除原头像失败 文件："+oldAvatar+" 不存在");
+            }
+        }
+
+        return ApiResult.success(null, "修改头像成功");
+    }
 }

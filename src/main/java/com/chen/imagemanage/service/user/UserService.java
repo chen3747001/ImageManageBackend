@@ -18,4 +18,10 @@ public interface UserService extends IService<User> {
 
     //用户登录
     String  executeLogin(LoginDTO dto);
+
+    //修改头像信息
+    Boolean setAvatar(String userName,String avatar);
+
+    //修改用户信息
+    Boolean updateUserInformation(String userName,String bio,String email,String mobile,String role);
 }

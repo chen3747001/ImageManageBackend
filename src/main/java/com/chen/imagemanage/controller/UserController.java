@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.chen.imagemanage.common.api.ApiResult;
 import com.chen.imagemanage.model.dto.LoginDTO;
 import com.chen.imagemanage.model.dto.RegisterDTO;
+import com.chen.imagemanage.model.dto.UpdateUserDTO;
 import com.chen.imagemanage.model.entity.User;
 import com.chen.imagemanage.service.user.UserService;
 import org.springframework.web.bind.annotation.*;
@@ -52,5 +53,18 @@ public class UserController extends BaseController {
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public ApiResult<Object> logOut() {
         return ApiResult.success(null, "注销成功");
+    }
+
+    //修改用户信息
+    @PostMapping("/updateUserInformation")
+    public ApiResult<Object> updateUserInformation(@RequestHeader(value = USER_NAME) String userName, @RequestBody UpdateUserDTO updateUserDTO){
+        System.out.println(userName+updateUserDTO.getEmail());
+        boolean updateOk=userService.updateUserInformation(userName,updateUserDTO.getBio(),updateUserDTO.getEmail(),updateUserDTO.getMobile(),updateUserDTO.getRole());
+        if(updateOk){
+            return ApiResult.success(null, "修改用户信息成功");
+        }
+        else{
+            return ApiResult.failed("修改用户信息失败");
+        }
     }
 }

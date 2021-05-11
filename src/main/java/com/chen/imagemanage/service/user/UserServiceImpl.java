@@ -13,14 +13,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.Date;
 
 @Slf4j
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
+    @Resource
+    UserMapper userMapper;
 
-
+    //用户注册
     @Override
     public User executeRegister(RegisterDTO dto) {
         //查询是否有相同用户名的用户
@@ -34,6 +37,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 .password(MD5Util.getPwd(dto.getPass()))
                 .email(dto.getEmail())
                 .createTime(new Date())
+                .avatar("add.png")
                 .score(0)
                 .build();
 
@@ -67,6 +71,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             log.warn("用户不存在or密码验证失败=======>{}", dto.getUsername());
         }
         return token;
+    }
+
+    //修改头像信息
+    @Override
+    public Boolean setAvatar(String userName,String avatar){
+        return userMapper.updateAvatar(userName,avatar);
+    }
+
+    //修改用户信息
+    public Boolean updateUserInformation(String userName,String bio,String email,String mobile,String role){
+        return userMapper.updateUserInformation(userName,bio,email,mobile,role);
     }
 
 }

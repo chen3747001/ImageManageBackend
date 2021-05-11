@@ -48,7 +48,7 @@ public class PictureSetController {
                 .name(dto.getName())
                 .owner(userName)
                 .useRange(dto.getUseRange())
-                .avatar("none")
+                .avatar("add.png")
                 .build();
 
         PictureSet result = pictureSetService.create(pictureSet);

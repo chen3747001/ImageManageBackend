@@ -55,8 +55,8 @@ public class User implements Serializable {
     /**
      * 用户角色
      */
-    @TableField("role_id")
-    private Integer roleId;
+    @TableField("role")
+    private String role;
 
     @TableField(value = "create_time", fill = FieldFill.INSERT)
     private Date createTime;
