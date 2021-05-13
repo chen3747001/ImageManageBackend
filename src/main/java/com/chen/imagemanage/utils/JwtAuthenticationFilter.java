@@ -36,6 +36,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     //受保护的请求的路径
     private boolean isProtectedUrl(HttpServletRequest request) {
         List<String> protectedPaths = new ArrayList<String>();
+        protectedPaths.add("/team/*");
         protectedPaths.add("/user/info");
         protectedPaths.add("/user/updateUserInformation");
         protectedPaths.add("/pictureSet/*");

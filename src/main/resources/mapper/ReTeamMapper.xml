@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.chen.imagemanage.mapper.TeamMapper">
+    <resultMap id="Team" type="com.chen.imagemanage.model.entity.Team">
+        <result column="name" property="name"/>
+        <result column="owner" property="owner"/>
+        <result column="bio" property="bio"/>
+        <result column="email" property="email"/>
+        <result column="avatar" property="avatar"/>
+        <result column="peopleCount" property="peopleCount"/>
+        <result column="setCount" property="setCount"/>
+    </resultMap>
+
+    <select id="selectTeamsByMemberName" resultMap="Team">
+        select t.name,t.owner,t.bio,t.email,t.avatar,t.peopleCount,t.setCount from team t,teammember m
+        where m.memberName=#{memberName} and t.name=m.teamName
+    </select>
+
+    <select id="getTeamPage" resultMap="Team">
+        select t.name,t.owner,t.bio,t.email,t.avatar,t.peopleCount,t.setCount from team t,teammember m
+        where m.memberName=#{memberName} and t.name=m.teamName
+    </select>
+
+</mapper>

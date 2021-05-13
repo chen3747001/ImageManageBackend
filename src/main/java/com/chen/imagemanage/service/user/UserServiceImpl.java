@@ -3,10 +3,13 @@ package com.chen.imagemanage.service.user;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.chen.imagemanage.mapper.TeamMapper;
 import com.chen.imagemanage.mapper.UserMapper;
 import com.chen.imagemanage.model.dto.LoginDTO;
 import com.chen.imagemanage.model.dto.RegisterDTO;
+import com.chen.imagemanage.model.entity.Team;
 import com.chen.imagemanage.model.entity.User;
+import com.chen.imagemanage.service.team.TeamService;
 import com.chen.imagemanage.utils.JwtUtil;
 import com.chen.imagemanage.utils.MD5Util;
 import lombok.extern.slf4j.Slf4j;
@@ -22,14 +25,26 @@ import java.util.Date;
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
     @Resource
     UserMapper userMapper;
+    @Resource
+    TeamService teamService;
+
+    //检验该用户名或者邮箱是否已被使用
+    @Override
+    public boolean isUsed(String name,String email){
+        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
+//        wrapper.eq(User::getUsername, name).eq(User::getEmail, email);
+        wrapper.eq(User::getUsername, name).or().eq(User::getEmail, email);
+        User umsUser = baseMapper.selectOne(wrapper);
+        return ObjectUtils.isEmpty(umsUser);
+    }
 
     //用户注册
     @Override
     public User executeRegister(RegisterDTO dto) {
         //查询是否有相同用户名的用户
-        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(User::getUsername, dto.getName()).or().eq(User::getEmail, dto.getEmail());
-        User umsUser = baseMapper.selectOne(wrapper);
+//        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
+//        wrapper.eq(User::getUsername, dto.getName()).or().eq(User::getEmail, dto.getEmail());
+//        User umsUser = baseMapper.selectOne(wrapper);
 
         User addUser = User.builder()
                 .username(dto.getName())
@@ -41,7 +56,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 .score(0)
                 .build();
 
-        if (!ObjectUtils.isEmpty(umsUser)) {
+        if(!this.isUsed(dto.getName(),dto.getEmail()) || !teamService.isUsed(dto.getName(),dto.getEmail())){
+//        if (!ObjectUtils.isEmpty(umsUser)) {
             log.info("账号或邮箱已存在！");
             User tempWrongUser=null;
             return  tempWrongUser;
