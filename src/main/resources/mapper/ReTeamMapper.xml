@@ -21,4 +21,17 @@
         where m.memberName=#{memberName} and t.name=m.teamName
     </select>
 
+    <update id="updateAvatar">
+        update team
+        set avatar=#{avatar}
+        where name=#{teamName}
+
+    </update>
+
+    <update id="updateTeamInformation">
+        update team
+        set bio=#{bio},email=#{email}
+        where name=#{teamName}
+    </update>
+
 </mapper>

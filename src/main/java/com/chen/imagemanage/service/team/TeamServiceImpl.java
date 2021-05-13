@@ -61,4 +61,22 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, Team> implements Te
         Page<Team> mySet = teamMapper.getTeamPage(page,memberName);
         return mySet;
     }
+
+    //根据团队名返回团队的信息
+    @Override
+    public Team getTeamByTeamName(String teamName){
+        LambdaQueryWrapper<Team> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Team::getName, teamName);
+        return baseMapper.selectOne(wrapper);
+    }
+
+    //修改头像信息
+    public boolean updateAvatar(String teamName,String avatar){
+        return teamMapper.updateAvatar(teamName,avatar);
+    }
+
+    //修改团队信息
+    public Boolean updateTeamInformation(String teamName,String bio,String email){
+        return teamMapper.updateTeamInformation(teamName,bio,email);
+    }
 }

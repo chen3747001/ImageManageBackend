@@ -18,4 +18,13 @@ public interface TeamService extends IService<Team> {
 
     //分页展示团队信息
     Page<Team> getTeamPage(Page<Team> page, String memberName);
+
+    //根据团队名返回团队的信息
+    Team getTeamByTeamName(String teamName);
+
+    //修改头像信息
+    boolean updateAvatar(String teamName,String avatar);
+
+    //修改团队信息
+    Boolean updateTeamInformation(String teamName,String bio,String email);
 }

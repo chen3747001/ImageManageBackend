@@ -14,6 +14,7 @@ import com.chen.imagemanage.model.entity.PictureSet;
 import com.chen.imagemanage.model.vo.PictureVO;
 import com.chen.imagemanage.service.picture.PictureService;
 import com.chen.imagemanage.service.pictureSet.PictureSetService;
+import com.chen.imagemanage.service.team.TeamService;
 import com.chen.imagemanage.service.user.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,8 @@ public class PictureController {
     private PictureService pictureService;
     @Resource
     private UserService userService;
+    @Resource
+    private TeamService teamService;
 
     //获得对应数据集的所有图片的信息
     @RequestMapping(value = "/getPictureInformation/{name}", method = RequestMethod.GET)
@@ -287,7 +290,13 @@ public class PictureController {
        /*
        * 修改数据库中的信息
        */
-        userService.setAvatar(name,newName);
+        if(kind.equals("user")){
+            userService.setAvatar(name,newName);
+        }
+        else if(kind.equals("team")){
+            teamService.updateAvatar(name,newName);
+        }
+
 
         /*
         * 如果图片不是add.png
