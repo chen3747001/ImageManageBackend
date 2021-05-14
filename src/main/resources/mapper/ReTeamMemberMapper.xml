@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.chen.imagemanage.mapper.TeamMemberMapper">
+    <resultMap id="TeamMember" type="com.chen.imagemanage.model.entity.TeamMember">
+        <id column="id" property="id"/>
+        <result column="teamName" property="teamName"/>
+        <result column="memberName" property="memberName"/>
+        <result column="ableDelete" property="ableDelete"/>
+        <result column="ableAdd" property="ableAdd"/>
+        <result column="ableCreateSet" property="ableCreateSet"/>
+        <result column="ableDeleteSet" property="ableDeleteSet"/>
+    </resultMap>
+
+    <resultMap id="TeamMemberVO" type="com.chen.imagemanage.model.vo.TeamMemberVO">
+        <id column="id" property="id"/>
+        <result column="teamName" property="teamName"/>
+        <result column="memberName" property="memberName"/>
+        <result column="ableDelete" property="ableDelete"/>
+        <result column="ableAdd" property="ableAdd"/>
+        <result column="ableCreateSet" property="ableCreateSet"/>
+        <result column="ableDeleteSet" property="ableDeleteSet"/>
+        <result column="bio" property="bio"/>
+        <result column="avatar" property="avatar"/>
+    </resultMap>
+
+    <select id="getTeamMemberPage" resultMap="TeamMemberVO">
+        select m.teamName,m.memberName,m.ableDelete,m.ableAdd,m.ableCreateSet,m.ableDeleteSet,u.bio,u.avatar
+        from user u,teammember m
+        where m.teamName=#{teamName} and u.username=m.memberName
+    </select>
+</mapper>
