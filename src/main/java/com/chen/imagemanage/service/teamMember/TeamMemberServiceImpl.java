@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -54,8 +55,21 @@ public class TeamMemberServiceImpl extends ServiceImpl<TeamMemberMapper, TeamMem
         }
     }
 
-    //根据团队名分页展示团队成员信息
+    //根据团队名分页展示团队成员信息(包括简介和头像)Page
     public Page<TeamMemberVO> getTeamMemberPage(Page<Team> page, String teamName){
         return teamMemberMapper.getTeamMemberPage(page,teamName);
+    }
+
+    //根据团队名返回成员的信息
+    public List<TeamMember> getTeamMemberList(String teamName){
+        LambdaQueryWrapper<TeamMember> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(TeamMember::getTeamName, teamName);
+        return baseMapper.selectList(wrapper);
+    }
+
+    //修改团队中成员的权力
+    public boolean updatePower(String teamName,String memberName,Integer ableDelete,Integer ableAdd,Integer ableAddSet,Integer ableDeleteSet){
+
+        return teamMemberMapper.updatePower(teamName,memberName,ableDelete,ableAdd,ableAddSet,ableDeleteSet);
     }
 }

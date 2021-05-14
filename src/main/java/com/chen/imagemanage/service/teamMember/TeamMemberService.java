@@ -6,6 +6,8 @@ import com.chen.imagemanage.model.entity.Team;
 import com.chen.imagemanage.model.entity.TeamMember;
 import com.chen.imagemanage.model.vo.TeamMemberVO;
 
+import java.util.List;
+
 public interface TeamMemberService extends IService<TeamMember> {
     //检验该用户是否已在团队中
     boolean isInThisTeam(String teamName,String memberName);
@@ -13,6 +15,12 @@ public interface TeamMemberService extends IService<TeamMember> {
     //添加一个团队成员
     boolean addMember(String teamName,String memberName,Integer ableDelete,Integer ableAdd,Integer ableCreateSet,Integer ableDeleteSet);
 
-    //根据团队名分页展示团队成员信息
+    //根据团队名分页展示团队成员信息(包括简介和头像)Page
     Page<TeamMemberVO> getTeamMemberPage(Page<Team> page, String teamName);
+
+    //根据团队名返回成员的信息
+    List<TeamMember> getTeamMemberList(String teamName);
+
+    //修改团队中成员的权力
+    boolean updatePower(String teamName,String memberName,Integer ableDelete,Integer ableAdd,Integer ableAddSet,Integer ableDeleteSet);
 }

@@ -28,4 +28,10 @@
         from user u,teammember m
         where m.teamName=#{teamName} and u.username=m.memberName
     </select>
+
+    <update id="updatePower">
+        update teammember
+        set ableDelete=#{ableDelete},ableAdd=#{ableAdd},ableCreateSet=#{ableAddSet},ableDeleteSet=#{ableDeleteSet}
+        where teamName=#{teamName} and memberName=#{memberName}
+    </update>
 </mapper>
