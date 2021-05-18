@@ -65,7 +65,7 @@ public class TeamController {
         return ApiResult.success(teamService.getTeamByTeamName(teamName));
     }
 
-    //修改用户信息
+    //修改团队信息
     @PostMapping("/updateInformation")
     public ApiResult<Object> updateUserInformation(@RequestParam(value = "teamName")String teamName,
                                                    @RequestParam(value = "bio")String bio,

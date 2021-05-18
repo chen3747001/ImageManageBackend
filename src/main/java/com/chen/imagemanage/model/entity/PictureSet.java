@@ -81,4 +81,21 @@ public class PictureSet implements Serializable {
     @TableField(value = "browse")
     private Integer browse;
 
+    /*
+    * 简介
+    * */
+    @TableField(value="bio")
+    private String bio;
+
+    /*
+     * 应用场景
+     * */
+    @TableField(value="scenario")
+    private String scenario;
+
+    /*
+     * 数据的类型
+     * */
+    @TableField(value="dataKind")
+    private String dataKind;
 }

@@ -296,6 +296,9 @@ public class PictureController {
         else if(kind.equals("team")){
             teamService.updateAvatar(name,newName);
         }
+        else if(kind.equals("set")){
+            pictureSetService.updateAvatar(name,newName);
+        }
 
 
         /*

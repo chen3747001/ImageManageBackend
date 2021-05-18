@@ -7,6 +7,7 @@ import com.chen.imagemanage.common.api.ApiResult;
 import com.chen.imagemanage.model.dto.CreatePictureSetDTO;
 import com.chen.imagemanage.model.entity.Picture;
 import com.chen.imagemanage.model.entity.PictureSet;
+import com.chen.imagemanage.model.vo.PictureCardVO;
 import com.chen.imagemanage.model.vo.PictureVO;
 import com.chen.imagemanage.service.picture.PictureService;
 import com.chen.imagemanage.service.pictureSet.PictureSetService;
@@ -69,12 +70,30 @@ public class PictureSetController {
 
     //展示属于我的数据集
     @RequestMapping(value = "/mySetTest", method = RequestMethod.GET)
-    public ApiResult<Page<PictureSet>> showMyPictureSetTest(
+    public ApiResult<Page<PictureCardVO>> showMyPictureSetTest(
             @RequestParam(value = "tab", defaultValue = "latest") String tab,
             @RequestParam(value = "pageNo", defaultValue = "1")  Integer pageNo,
             @RequestParam(value = "size", defaultValue = "10") Integer pageSize,
+            @RequestParam(value = "scenario") String  scenario,
+            @RequestParam(value = "dataKind") String  dataKind,
+            @RequestParam(value = "searchName") String searchName,
             @RequestHeader(value = USER_NAME) String userName) {
-        Page<PictureSet> result = pictureSetService.getMyList(new Page<>(pageNo, pageSize), tab,userName);
+        System.out.println("开始查询"+scenario+"=="+dataKind+"=="+searchName);
+        Page<PictureCardVO> result = pictureSetService.getMyList(new Page<>(pageNo, pageSize), tab,userName,scenario,dataKind,searchName);
+        return ApiResult.success(result);
+    }
+
+    //展示公共的数据集
+    @RequestMapping(value = "/showPublicSet", method = RequestMethod.GET)
+    public ApiResult<Page<PictureCardVO>> showPublicPictureSetTest(
+            @RequestParam(value = "tab", defaultValue = "latest") String tab,
+            @RequestParam(value = "pageNo", defaultValue = "1")  Integer pageNo,
+            @RequestParam(value = "size", defaultValue = "10") Integer pageSize,
+            @RequestParam(value = "scenario") String  scenario,
+            @RequestParam(value = "dataKind") String  dataKind,
+            @RequestParam(value = "searchName") String searchName) {
+        System.out.println("开始查询"+scenario+"=="+dataKind+"=="+searchName);
+        Page<PictureCardVO> result = pictureSetService.getPublicList(new Page<>(pageNo, pageSize), tab,scenario,dataKind,searchName);
         return ApiResult.success(result);
     }
 
@@ -183,5 +202,20 @@ public class PictureSetController {
             e.printStackTrace();
         }
 
+    }
+
+    //修改数据集信息
+    @PostMapping("/updateSetInformation")
+    public ApiResult<Object> updateUserInformation(@RequestParam(value = "setName")String setName,
+                                                   @RequestParam(value = "bio")String bio,
+                                                   @RequestParam(value = "scenario")String scenario,
+                                                   @RequestParam(value = "dataKind")String dataKind){
+        boolean updateOk=pictureSetService.updateSetInformation(setName,bio,scenario,dataKind);
+        if(updateOk){
+            return ApiResult.success(null, "修改用户信息成功");
+        }
+        else{
+            return ApiResult.failed("修改用户信息失败");
+        }
     }
 }

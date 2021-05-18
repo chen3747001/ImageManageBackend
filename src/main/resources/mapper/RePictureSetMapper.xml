@@ -12,6 +12,9 @@
         <result column="avatar" property="avatar"/>
         <result column="useRange" property="useRange"/>
         <result column="browse" property="browse"/>
+        <result column="bio" property="bio"/>
+        <result column="scenario" property="scenario"/>
+        <result column="dataKind" property="dataKind"/>
     </resultMap>
 
     <resultMap id="PictureSet" type="com.chen.imagemanage.model.entity.PictureSet">
@@ -25,12 +28,32 @@
         <result column="avatar" property="avatar"/>
         <result column="useRange" property="useRange"/>
         <result column="browse" property="browse"/>
+        <result column="bio" property="bio"/>
+        <result column="scenario" property="scenario"/>
+        <result column="dataKind" property="dataKind"/>
+    </resultMap>
+
+    <resultMap id="PictureCardVO" type="com.chen.imagemanage.model.vo.PictureCardVO">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="owner" property="owner"/>
+        <result column="create_time" property="createTime"/>
+        <result column="amend_time" property="amendTime"/>
+        <result column="amountPicture" property="amountPicture"/>
+        <result column="size" property="size"/>
+        <result column="avatar" property="avatar"/>
+        <result column="useRange" property="useRange"/>
+        <result column="browse" property="browse"/>
+        <result column="bio" property="bio"/>
+        <result column="scenario" property="scenario"/>
+        <result column="dataKind" property="dataKind"/>
+        <result column="avatar" property="ownerAvatar"/>
     </resultMap>
 
     <select id="selectListAndPage" resultMap="PictureSetVO">
         SELECT *
         FROM pictureset
-        where owner=#{ownerName}
+        where owner=#{ownerName} AND scenario LIKE "%"#{scenario}"%" AND dataKind LIKE "%"#{dataKind}"%" AND name LIKE "%"#{searchName}"%"
 
 
             <if test="tab == 'hot'">
@@ -43,10 +66,39 @@
 
     </select>
 
+    <select id="selectPublicListAndPage" resultMap="PictureSetVO">
+        SELECT *
+        FROM pictureset
+        where use_range='公开' AND scenario LIKE "%"#{scenario}"%" AND dataKind LIKE "%"#{dataKind}"%" AND name LIKE "%"#{searchName}"%"
+
+
+        <if test="tab == 'hot'">
+            order by browse desc
+        </if>
+        <if test="tab == 'time'">
+            order by create_time desc
+        </if>
+
+
+    </select>
+
     <update id="uploadPicture">
         update pictureset
         set amend_time=#{amendTime},amount_picture=#{amountPicture},size=#{size}
         where name=#{name}
 
+    </update>
+
+    <update id="updateAvatar">
+        update pictureset
+        set avatar=#{avatar}
+        where name=#{setName}
+
+    </update>
+
+    <update id="updateSetInformation">
+        update pictureset
+        set bio=#{bio},scenario=#{scenario},dataKind=#{dataKind}
+        where name=#{setName}
     </update>
 </mapper>

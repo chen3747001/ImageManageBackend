@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.chen.imagemanage.mapper.PictureSetMapper;
 import com.chen.imagemanage.model.entity.PictureSet;
+import com.chen.imagemanage.model.vo.PictureCardVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +31,9 @@ public class PictureSetServiceImpl extends ServiceImpl<PictureSetMapper, Picture
 
             PictureSet addSet = PictureSet.builder()
                 .name(pictureSet.getName())
-                .createTime(new Date()).useRange(pictureSet.getUseRange()).owner(pictureSet.getOwner()).avatar(pictureSet.getAvatar()).browse(0).amountPicture(0).size(0.0)
+                .createTime(new Date()).useRange(pictureSet.getUseRange()).owner(pictureSet.getOwner()).
+                            avatar(pictureSet.getAvatar()).browse(0).amountPicture(0).size(0.0).bio("null").
+                            scenario("mixed").dataKind("mixed").amendTime(new Date())
                 .build();
 
             if (!ObjectUtils.isEmpty(judge)) {
@@ -53,12 +56,17 @@ public class PictureSetServiceImpl extends ServiceImpl<PictureSetMapper, Picture
         return wrapperResult;
     }
 
+    //分页展示我的数据集
     @Override
-    public Page<PictureSet> getMyList(Page<PictureSet> page, String tab,String ownerName){
-        LambdaQueryWrapper<PictureSet> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(PictureSet::getOwner, ownerName);
+    public Page<PictureCardVO> getMyList(Page<PictureCardVO> page, String tab, String ownerName,String scenario,String dataKind,String searchName){
+        Page<PictureCardVO> mySet = pictureSetMapper.selectListAndPage(page, tab,ownerName,scenario,dataKind,searchName);
+        return mySet;
+    }
 
-        Page<PictureSet> mySet = pictureSetMapper.selectListAndPage(page, tab,ownerName);
+    //分页展示公共的数据集
+    @Override
+    public Page<PictureCardVO> getPublicList(Page<PictureCardVO> page, String tab,String scenario,String dataKind,String searchName){
+        Page<PictureCardVO> mySet = pictureSetMapper.selectPublicListAndPage(page, tab,scenario,dataKind,searchName);
         return mySet;
     }
 
@@ -81,6 +89,18 @@ public class PictureSetServiceImpl extends ServiceImpl<PictureSetMapper, Picture
     @Override
     public boolean deletePicture(String name, Date amendTime, Integer amountPicture, Double size){
         return pictureSetMapper.uploadPicture(name,amendTime,amountPicture,size);
+    }
+
+    //修改头像信息
+    @Override
+    public boolean updateAvatar(String setName,String avatar){
+        return pictureSetMapper.updateAvatar(setName,avatar);
+    }
+
+    //修改数据集信息
+    @Override
+    public Boolean updateSetInformation(String setName,String bio,String scenario,String dataKind){
+        return pictureSetMapper.updateSetInformation(setName,bio,scenario,dataKind);
     }
 
 }
