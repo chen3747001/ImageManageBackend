@@ -27,4 +27,5 @@ public interface TeamService extends IService<Team> {
 
     //修改团队信息
     Boolean updateTeamInformation(String teamName,String bio,String email);
+
 }

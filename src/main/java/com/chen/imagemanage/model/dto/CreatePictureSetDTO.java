@@ -8,6 +8,9 @@ import javax.validation.constraints.Size;
 
 @Data
 public class CreatePictureSetDTO {
+    @NotBlank(message = "拥有者名称不能为空")
+    private String ownerName;
+
     @NotBlank(message = "数据集名称不能为空")
     private String name;
 

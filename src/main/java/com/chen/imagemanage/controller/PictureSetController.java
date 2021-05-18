@@ -44,10 +44,10 @@ public class PictureSetController {
 
     //创建新的数据集
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public ApiResult<PictureSet> createPictureSet(@RequestHeader(value = USER_NAME) String userName, @Valid @RequestBody CreatePictureSetDTO dto) {
+    public ApiResult<PictureSet> createPictureSet(@Valid @RequestBody CreatePictureSetDTO dto) {
         PictureSet pictureSet = PictureSet.builder()
                 .name(dto.getName())
-                .owner(userName)
+                .owner(dto.getOwnerName())
                 .useRange(dto.getUseRange())
                 .avatar("add.png")
                 .build();
@@ -71,13 +71,13 @@ public class PictureSetController {
     //展示属于我的数据集
     @RequestMapping(value = "/mySetTest", method = RequestMethod.GET)
     public ApiResult<Page<PictureCardVO>> showMyPictureSetTest(
+            @RequestParam(value = "user") String userName,
             @RequestParam(value = "tab", defaultValue = "latest") String tab,
             @RequestParam(value = "pageNo", defaultValue = "1")  Integer pageNo,
             @RequestParam(value = "size", defaultValue = "10") Integer pageSize,
             @RequestParam(value = "scenario") String  scenario,
             @RequestParam(value = "dataKind") String  dataKind,
-            @RequestParam(value = "searchName") String searchName,
-            @RequestHeader(value = USER_NAME) String userName) {
+            @RequestParam(value = "searchName") String searchName) {
         System.out.println("开始查询"+scenario+"=="+dataKind+"=="+searchName);
         Page<PictureCardVO> result = pictureSetService.getMyList(new Page<>(pageNo, pageSize), tab,userName,scenario,dataKind,searchName);
         return ApiResult.success(result);

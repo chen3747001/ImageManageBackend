@@ -71,12 +71,16 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, Team> implements Te
     }
 
     //修改头像信息
+    @Override
     public boolean updateAvatar(String teamName,String avatar){
         return teamMapper.updateAvatar(teamName,avatar);
     }
 
     //修改团队信息
+    @Override
     public Boolean updateTeamInformation(String teamName,String bio,String email){
         return teamMapper.updateTeamInformation(teamName,bio,email);
     }
+
+
 }
