@@ -72,4 +72,13 @@ public class TeamMemberServiceImpl extends ServiceImpl<TeamMemberMapper, TeamMem
 
         return teamMemberMapper.updatePower(teamName,memberName,ableDelete,ableAdd,ableAddSet,ableDeleteSet);
     }
+
+    //删除团队成员
+    @Override
+    public Integer deleteMember(String teamName,String memberName){
+        LambdaQueryWrapper<TeamMember> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(TeamMember::getTeamName, teamName).eq(TeamMember::getMemberName,memberName);
+        return baseMapper.delete(wrapper);
+    }
+
 }

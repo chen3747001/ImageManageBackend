@@ -28,6 +28,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Resource
     TeamService teamService;
 
+    //检验该用户是否存在
+    @Override
+    public boolean isExisted(String name){
+        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(User::getUsername, name);
+        User umsUser = baseMapper.selectOne(wrapper);
+        return ObjectUtils.isEmpty(umsUser);
+    }
+
     //检验该用户名或者邮箱是否已被使用
     @Override
     public boolean isUsed(String name,String email){

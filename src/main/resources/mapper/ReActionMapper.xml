@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.chen.imagemanage.mapper.ActionMapper">
+    <resultMap id="Actions" type="com.chen.imagemanage.model.entity.Action">
+        <result column="id" property="id"/>
+        <result column="sender" property="sender"/>
+        <result column="receiver" property="receiver"/>
+        <result column="action" property="action"/>
+        <result column="object" property="object"/>
+        <result column="message" property="message"/>
+        <result column="date" property="date"/>
+        <result column="state" property="state"/>
+        <result column="result" property="result"/>
+    </resultMap>
+
+    <update id="updateAction">
+        update action
+        set state='solved',result=#{result},date =#{newDate}
+        where id=#{id}
+    </update>
+
+    <select id="getNotSolvedActions" resultMap="Actions">
+        SELECT *
+        FROM action
+
+        where (sender=#{name} or receiver=#{name}) and state='notSolved'
+
+        order by date desc
+    </select>
+
+    <select id="getSolvedActions" resultMap="Actions">
+        SELECT *
+        FROM action
+
+        where (sender=#{name} or receiver=#{name}) and state='solved'
+
+        order by date desc
+    </select>
+</mapper>

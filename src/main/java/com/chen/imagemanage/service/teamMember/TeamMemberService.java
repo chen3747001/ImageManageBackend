@@ -23,4 +23,8 @@ public interface TeamMemberService extends IService<TeamMember> {
 
     //修改团队中成员的权力
     boolean updatePower(String teamName,String memberName,Integer ableDelete,Integer ableAdd,Integer ableAddSet,Integer ableDeleteSet);
+
+    //删除团队成员
+    Integer deleteMember(String teamName,String memberName);
+
 }

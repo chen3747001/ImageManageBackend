@@ -8,6 +8,7 @@ import com.chen.imagemanage.mapper.PictureSetMapper;
 import com.chen.imagemanage.mapper.TeamMapper;
 import com.chen.imagemanage.model.entity.PictureSet;
 import com.chen.imagemanage.model.entity.Team;
+import com.chen.imagemanage.model.entity.TeamMember;
 import com.chen.imagemanage.model.entity.User;
 import com.chen.imagemanage.service.pictureSet.PictureSetService;
 import com.chen.imagemanage.service.user.UserService;

@@ -7,6 +7,9 @@ import com.chen.imagemanage.model.entity.User;
 
 public interface UserService extends IService<User> {
 
+    //检验该用户是否存在
+    boolean isExisted(String name);
+
     //检验该用户名或者邮箱是否已被使用
     boolean isUsed(String name,String email);
     /**

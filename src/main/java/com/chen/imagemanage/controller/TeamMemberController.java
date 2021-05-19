@@ -2,7 +2,6 @@ package com.chen.imagemanage.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.chen.imagemanage.common.api.ApiResult;
-import com.chen.imagemanage.model.entity.Team;
 import com.chen.imagemanage.model.entity.TeamMember;
 import com.chen.imagemanage.model.vo.TeamMemberVO;
 import com.chen.imagemanage.service.teamMember.TeamMemberService;
@@ -50,6 +49,20 @@ public class TeamMemberController {
         }
         else {
             return ApiResult.failed("修改失败");
+        }
+    }
+
+    //删除成员
+    @PostMapping("/deleteMember")
+    public ApiResult<java.lang.Object> deleteMember(
+            @RequestParam(value = "teamName")String teamName,
+            @RequestParam(value = "memberName") String memberName){
+        Integer deleteOk=teamMemberService.deleteMember(teamName,memberName);
+        if(deleteOk==1){
+            return ApiResult.success("删除成功");
+        }
+        else{
+            return ApiResult.failed("删除失败");
         }
     }
 }
