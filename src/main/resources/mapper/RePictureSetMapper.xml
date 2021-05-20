@@ -101,4 +101,10 @@
         set bio=#{bio},scenario=#{scenario},dataKind=#{dataKind}
         where name=#{setName}
     </update>
+
+    <update id="addBrowse">
+        update pictureset
+        set browse= (browse+1)
+        where name=#{setName}
+    </update>
 </mapper>

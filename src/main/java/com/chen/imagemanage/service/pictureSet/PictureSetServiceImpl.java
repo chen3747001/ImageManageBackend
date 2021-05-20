@@ -103,4 +103,9 @@ public class PictureSetServiceImpl extends ServiceImpl<PictureSetMapper, Picture
         return pictureSetMapper.updateSetInformation(setName,bio,scenario,dataKind);
     }
 
+    //新增一个浏览人数
+    @Override
+    public Boolean addBrowse(String setName){
+        return pictureSetMapper.addBrowse(setName);
+    }
 }

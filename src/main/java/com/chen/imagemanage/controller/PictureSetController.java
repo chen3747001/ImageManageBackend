@@ -218,4 +218,11 @@ public class PictureSetController {
             return ApiResult.failed("修改用户信息失败");
         }
     }
+
+    //新增一个访问人数
+    @PostMapping("/addBrowse")
+    public ApiResult<Object> addBrowse(@RequestParam(value = "setName") String setName){
+        pictureSetService.addBrowse(setName);
+        return ApiResult.success("添加浏览量成功");
+    }
 }

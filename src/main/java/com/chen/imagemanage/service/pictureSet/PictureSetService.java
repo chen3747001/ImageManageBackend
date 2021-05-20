@@ -36,4 +36,7 @@ public interface PictureSetService extends IService<PictureSet> {
 
     //修改数据集信息
     Boolean updateSetInformation(String setName,String bio,String scenario,String dataKind);
+
+    //新增一个浏览人数
+    Boolean addBrowse(String setName);
 }

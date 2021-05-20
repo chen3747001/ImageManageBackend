@@ -25,4 +25,7 @@ public interface PictureSetMapper extends BaseMapper<PictureSet> {
 
     //修改团队信息
     boolean updateSetInformation(String setName,String bio,String scenario,String dataKind);
+
+    //新增一个浏览人数
+    Boolean addBrowse(String setName);
 }
