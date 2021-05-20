@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.chen.imagemanage.model.entity.Team;
 import com.chen.imagemanage.model.entity.TeamMember;
+import com.chen.imagemanage.model.vo.RightVO;
 import com.chen.imagemanage.model.vo.TeamMemberVO;
 
 import java.util.List;
@@ -27,4 +28,9 @@ public interface TeamMemberService extends IService<TeamMember> {
     //删除团队成员
     Integer deleteMember(String teamName,String memberName);
 
+    //检测对应用户是否在对应团队中
+    Boolean isInTeam(String teamName,String userName);
+
+    //返回团队成员在团队中的权限
+    RightVO memberRight(String teamName,String memberName);
 }

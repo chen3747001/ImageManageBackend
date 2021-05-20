@@ -28,4 +28,9 @@ public interface TeamService extends IService<Team> {
     //修改团队信息
     Boolean updateTeamInformation(String teamName,String bio,String email);
 
+    //判断是否是团队
+    Boolean isTeam(String name);
+
+    //判断该用户是否是团队的创建者
+    Boolean isTeamOwner(String teamName,String userName);
 }

@@ -8,6 +8,7 @@ import com.chen.imagemanage.mapper.TeamMemberMapper;
 import com.chen.imagemanage.model.entity.Team;
 import com.chen.imagemanage.model.entity.TeamMember;
 import com.chen.imagemanage.model.entity.User;
+import com.chen.imagemanage.model.vo.RightVO;
 import com.chen.imagemanage.model.vo.TeamMemberVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -79,6 +80,33 @@ public class TeamMemberServiceImpl extends ServiceImpl<TeamMemberMapper, TeamMem
         LambdaQueryWrapper<TeamMember> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(TeamMember::getTeamName, teamName).eq(TeamMember::getMemberName,memberName);
         return baseMapper.delete(wrapper);
+    }
+
+    //检测对应用户是否在对应团队中
+    @Override
+    public Boolean isInTeam(String teamName,String userName){
+        LambdaQueryWrapper<TeamMember> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(TeamMember::getTeamName, teamName).eq(TeamMember::getMemberName, userName);
+        TeamMember umsTeamMember = baseMapper.selectOne(wrapper);
+        return !ObjectUtils.isEmpty(umsTeamMember);
+    }
+
+    //返回团队成员在团队中的权限
+    @Override
+    public RightVO memberRight(String teamName, String memberName){
+        LambdaQueryWrapper<TeamMember> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(TeamMember::getTeamName, teamName).eq(TeamMember::getMemberName, memberName);
+        TeamMember umsTeamMember = baseMapper.selectOne(wrapper);
+        RightVO rightVO=RightVO.builder()
+                .ownerKind("团队")
+                .role("拥有者")
+                .ableDelete(umsTeamMember.getAbleDelete())
+                .ableAdd(umsTeamMember.getAbleAdd())
+                .ableDeleteSet(umsTeamMember.getAbleDeleteSet())
+                .ableCreateSet(umsTeamMember.getAbleCreateSet())
+                .ableChange(0)
+                .build();
+        return rightVO;
     }
 
 }

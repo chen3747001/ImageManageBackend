@@ -29,4 +29,7 @@ public interface UserService extends IService<User> {
 
     //修改用户信息
     Boolean updateUserInformation(String userName,String bio,String email,String mobile,String role);
+
+    //判断用户是否是用户
+    boolean isUser(String userName);
 }

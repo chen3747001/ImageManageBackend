@@ -109,4 +109,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return userMapper.updateUserInformation(userName,bio,email,mobile,role);
     }
 
+    //判断用户是否是用户
+    @Override
+    public boolean isUser(String userName){
+        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(User::getUsername, userName);
+        User umsUser = baseMapper.selectOne(wrapper);
+        return !ObjectUtils.isEmpty(umsUser);
+    }
 }

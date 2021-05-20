@@ -83,5 +83,21 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, Team> implements Te
         return teamMapper.updateTeamInformation(teamName,bio,email);
     }
 
+    //判断是否是团队
+    @Override
+    public Boolean isTeam(String name){
+        LambdaQueryWrapper<Team> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Team::getName, name);
+        return !ObjectUtils.isEmpty(baseMapper.selectOne(wrapper));
+    }
 
+    //判断该用户是否是团队的创建者
+    @Override
+    public Boolean isTeamOwner(String teamName,String userName){
+        LambdaQueryWrapper<Team> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Team::getName, teamName);
+        Team team=baseMapper.selectOne(wrapper);
+        String ownerName=team.getOwner();
+        return ownerName.equals(userName);
+    }
 }

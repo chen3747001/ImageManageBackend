@@ -11,4 +11,6 @@ public interface UserMapper extends BaseMapper<User> {
 
     //修改用户信息
     boolean updateUserInformation(String userName,String bio,String email,String mobile,String role);
+
+
 }
