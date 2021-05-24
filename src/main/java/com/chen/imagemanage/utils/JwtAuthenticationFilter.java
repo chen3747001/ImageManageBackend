@@ -39,7 +39,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         protectedPaths.add("/right/*");
         protectedPaths.add("/collect/*");
         protectedPaths.add("/action/*");
-        protectedPaths.add("/team/*");
+//        protectedPaths.add("/team/*");
+        protectedPaths.add("/team/createTeam");
+        protectedPaths.add("/team/getTeamByMemberName");
+        protectedPaths.add("/team/getTeamByMemberNamePage");
+        protectedPaths.add("/team/updateInformation");
+
         protectedPaths.add("/user/info");
         protectedPaths.add("/user/updateUserInformation");
 //        protectedPaths.add("/pictureSet/*");
@@ -48,7 +53,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         protectedPaths.add("/pictureSet/mySet");
         protectedPaths.add("/pictureSet/mySetTest");
         protectedPaths.add("/pictureSet/updateSetInformation");
-        protectedPaths.add("/pictureSet/addBrowse");
 
         protectedPaths.add("/post/create");
         protectedPaths.add("/post/update");
