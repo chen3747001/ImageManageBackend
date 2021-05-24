@@ -58,4 +58,13 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper
 
         return true;
     }
+
+    //删除对应数据集的所有图片记录
+    @Override
+    public boolean deletePicturesBySetName(String setName){
+        LambdaQueryWrapper<Picture> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Picture::getSetName,setName);
+        baseMapper.delete(wrapper);
+        return true;
+    }
 }

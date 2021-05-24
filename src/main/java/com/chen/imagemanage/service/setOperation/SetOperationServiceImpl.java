@@ -38,4 +38,13 @@ public class SetOperationServiceImpl extends ServiceImpl<SetOperationMapper
 
         return baseMapper.selectList(wrapper);
     }
+
+    //删除对应数据集的所有操作记录
+    @Override
+    public Boolean deleteOperations(String setName){
+        LambdaQueryWrapper<SetOperation> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(SetOperation::getSetName,setName);
+        baseMapper.delete(wrapper);
+        return true;
+    }
 }

@@ -39,4 +39,7 @@ public interface PictureSetService extends IService<PictureSet> {
 
     //新增一个浏览人数
     Boolean addBrowse(String setName);
+
+    //删除对应数据集的信息
+    Boolean deleteSet(String setName);
 }

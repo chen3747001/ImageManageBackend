@@ -108,4 +108,13 @@ public class PictureSetServiceImpl extends ServiceImpl<PictureSetMapper, Picture
     public Boolean addBrowse(String setName){
         return pictureSetMapper.addBrowse(setName);
     }
+
+    //删除对应数据集的信息
+    @Override
+    public Boolean deleteSet(String setName){
+        LambdaQueryWrapper<PictureSet> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(PictureSet::getName,setName);
+        baseMapper.delete(wrapper);
+        return true;
+    }
 }

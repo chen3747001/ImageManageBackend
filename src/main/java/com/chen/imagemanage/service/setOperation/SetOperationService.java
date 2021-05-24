@@ -11,4 +11,7 @@ public interface SetOperationService extends IService<SetOperation> {
 
     //根据数据集名称返回所有操作的信息
     List<SetOperation> getOperationsBySetName(String setName);
+
+    //删除对应数据集的所有操作记录
+    Boolean deleteOperations(String setName);
 }

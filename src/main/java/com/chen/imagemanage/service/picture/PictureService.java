@@ -19,4 +19,7 @@ public interface PictureService extends IService<Picture> {
 
     //删除选中的图片
     boolean deletePictureList(String[] pictureList);
+
+    //删除对应数据集的所有图片记录
+    boolean deletePicturesBySetName(String setName);
 }

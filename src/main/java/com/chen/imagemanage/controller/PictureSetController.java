@@ -11,6 +11,7 @@ import com.chen.imagemanage.model.vo.PictureCardVO;
 import com.chen.imagemanage.service.picture.PictureService;
 import com.chen.imagemanage.service.pictureSet.PictureSetService;
 import com.chen.imagemanage.service.setOperation.SetOperationService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +27,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import static com.chen.imagemanage.utils.JwtUtil.USER_NAME;
-
+@Slf4j
 @RestController
 @RequestMapping("/pictureSet")
 public class PictureSetController {
@@ -234,5 +235,57 @@ public class PictureSetController {
     public ApiResult<Object> addBrowse(@RequestParam(value = "setName") String setName){
         pictureSetService.addBrowse(setName);
         return ApiResult.success("添加浏览量成功");
+    }
+
+    //删除数据集
+    @PostMapping("/deleteSet")
+    public ApiResult<Object> deleteSet(@RequestParam(value = "setName")String setName){
+        System.out.println("将要删除数据集");
+        PictureSet pictureSet=pictureSetService.getMessageByName(setName);
+        int i=0;
+        /*
+            获得头像的名称
+        */
+        String avatar=pictureSet.getAvatar();
+        String avatarPath="F:\\ImageManage\\data\\avatar\\";
+        File avatarFile=new File(avatarPath,avatar);
+        System.out.println("删除数据集"+avatar);
+        //如果头像不是系统初始化的头像，就删除
+        if(!avatar.equals("add.png")){
+            try {
+                avatarFile.delete();
+            } catch (Exception e) {
+                log.warn("删除文件失败");
+            }
+        }
+
+        /*
+            获得该数据集的图片列表
+        */
+        List<Picture> pictureList=pictureService.getPicInformation(setName);
+        String picPath="F:\\ImageManage\\data\\pictureData\\";
+        //删除对应的图片文件
+        for(i=0;i<pictureList.size();i++){
+            File file=new File(picPath,pictureList.get(i).getUid());
+            file.delete();
+        }
+
+        /*
+            删除数据库中的记录
+            1) setOperation
+            2) pictureSet
+            3)picture
+        */
+        boolean deleteOperation=setOperationService.deleteOperations(setName);
+        boolean deleteSet=pictureSetService.deleteSet(setName);
+        boolean deletePictures=pictureService.deletePicturesBySetName(setName);
+
+        if(deleteOperation && deleteSet && deletePictures){
+            return ApiResult.success("删除数据集成功");
+        }
+        else{
+            return ApiResult.failed("删除失败");
+        }
+
     }
 }
