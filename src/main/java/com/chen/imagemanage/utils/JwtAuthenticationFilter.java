@@ -54,13 +54,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         protectedPaths.add("/pictureSet/mySetTest");
         protectedPaths.add("/pictureSet/updateSetInformation");
 
-        protectedPaths.add("/post/create");
-        protectedPaths.add("/post/update");
-        protectedPaths.add("/post/delete/*");
-        protectedPaths.add("/comment/add_comment");
-        protectedPaths.add("/relationship/subscribe/*");
-        protectedPaths.add("/relationship/unsubscribe/*");
-        protectedPaths.add("/relationship/validate/*");
+        protectedPaths.add("/picture/upload");
+        protectedPaths.add("/picture/deletePictureList");
+        protectedPaths.add("/picture/updateAvatar");
         boolean bFind = false;
         for( String passedPath : protectedPaths ) {
             bFind = pathMatcher.match(passedPath, request.getServletPath());

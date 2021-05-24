@@ -8,9 +8,9 @@ import com.chen.imagemanage.model.dto.CreatePictureSetDTO;
 import com.chen.imagemanage.model.entity.Picture;
 import com.chen.imagemanage.model.entity.PictureSet;
 import com.chen.imagemanage.model.vo.PictureCardVO;
-import com.chen.imagemanage.model.vo.PictureVO;
 import com.chen.imagemanage.service.picture.PictureService;
 import com.chen.imagemanage.service.pictureSet.PictureSetService;
+import com.chen.imagemanage.service.setOperation.SetOperationService;
 import org.apache.commons.io.IOUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,6 +34,8 @@ public class PictureSetController {
     private PictureSetService pictureSetService;
     @Resource
     private PictureService pictureService;
+    @Resource
+    private SetOperationService setOperationService;
 
     @GetMapping("/show")
     public ApiResult<List<PictureSet>> getPictureSet() {
@@ -57,6 +59,9 @@ public class PictureSetController {
         if (ObjectUtils.isEmpty(result)) {
             return ApiResult.failed("该数据集名称已存在！");
         }
+
+        //保存操作的信息
+        setOperationService.createOperation(dto.getName(),dto.getOwnerName(),"新建数据集");
 
         return ApiResult.success(pictureSet);
     }
@@ -206,12 +211,17 @@ public class PictureSetController {
 
     //修改数据集信息
     @PostMapping("/updateSetInformation")
-    public ApiResult<Object> updateUserInformation(@RequestParam(value = "setName")String setName,
-                                                   @RequestParam(value = "bio")String bio,
-                                                   @RequestParam(value = "scenario")String scenario,
-                                                   @RequestParam(value = "dataKind")String dataKind){
+    public ApiResult<Object> updateUserInformation(
+            @RequestParam(value = "setName")String setName,
+            @RequestParam(value = "bio")String bio,
+            @RequestParam(value = "scenario")String scenario,
+            @RequestParam(value = "dataKind")String dataKind,
+            @RequestHeader(value = USER_NAME) String userName){
         boolean updateOk=pictureSetService.updateSetInformation(setName,bio,scenario,dataKind);
         if(updateOk){
+            //保存操作的信息
+            setOperationService.createOperation(setName,userName,"修改数据集介绍");
+
             return ApiResult.success(null, "修改用户信息成功");
         }
         else{

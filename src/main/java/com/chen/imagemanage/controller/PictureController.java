@@ -14,6 +14,7 @@ import com.chen.imagemanage.model.entity.PictureSet;
 import com.chen.imagemanage.model.vo.PictureVO;
 import com.chen.imagemanage.service.picture.PictureService;
 import com.chen.imagemanage.service.pictureSet.PictureSetService;
+import com.chen.imagemanage.service.setOperation.SetOperationService;
 import com.chen.imagemanage.service.team.TeamService;
 import com.chen.imagemanage.service.user.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +37,8 @@ import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static com.chen.imagemanage.utils.JwtUtil.USER_NAME;
+
 @Slf4j
 @RestController
 @RequestMapping("/picture")
@@ -48,6 +51,8 @@ public class PictureController {
     private UserService userService;
     @Resource
     private TeamService teamService;
+    @Resource
+    private SetOperationService setOperationService;
 
     //获得对应数据集的所有图片的信息
     @RequestMapping(value = "/getPictureInformation/{name}", method = RequestMethod.GET)
@@ -58,7 +63,9 @@ public class PictureController {
 
     //删除选中的图片
     @RequestMapping(value="/deletePictureList",method = RequestMethod.POST)
-    public ApiResult<Object> importData(@Valid @RequestBody DeletePictureDTO deletePictureDTO){
+    public ApiResult<Object> importData(
+            @Valid @RequestBody DeletePictureDTO deletePictureDTO,
+            @RequestHeader(value = USER_NAME) String userName){
 //        pictureService.deletePictureList(fileList);
         //分类获得数据
         String setName=deletePictureDTO.getSetName();
@@ -100,8 +107,9 @@ public class PictureController {
         boolean deleteOk=pictureService.deletePictureList(fileList);
         System.out.println("删除的所有内容大小是"+total_size);
 
+        //保存操作的信息
+        setOperationService.createOperation(setName,userName,"删除了 "+fileList.length+" 个文件");
 
-        System.out.println();
         return ApiResult.success(null, "删除成功");
     }
 
@@ -206,7 +214,10 @@ public class PictureController {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //上传图片
     @PostMapping("/upload")
-    public ApiResult<Object> importData(@RequestPart("files") MultipartFile[] files,@RequestPart("setName") String setName) throws IOException {
+    public ApiResult<Object> importData(
+            @RequestPart("files") MultipartFile[] files,
+            @RequestPart("setName") String setName,
+            @RequestHeader(value = USER_NAME) String userName) throws IOException {
         System.out.println("开始传输数据");
         //判断文件是否为空
         if(files==null || files.length==0){
@@ -262,12 +273,20 @@ public class PictureController {
         //在数据库中写入修改后的信息
         boolean updateOk=pictureSetService.uploadPicture(setName,time,amount_picture,size);
 
+        //保存操作的信息
+        setOperationService.createOperation(setName,userName,"上传了 "+files.length+" 个文件");
+
         return ApiResult.success(null, "上传成功");
     }
 
     //修改头像
     @PostMapping("/updateAvatar")
-    public ApiResult<Object> updateAvatar(@RequestPart("files") MultipartFile files,@RequestPart("name") String name,@RequestPart("kind") String kind,@RequestPart("oldAvatar") String oldAvatar) throws IOException {
+    public ApiResult<Object> updateAvatar(
+            @RequestPart("files") MultipartFile files,
+            @RequestPart("name") String name,
+            @RequestPart("kind") String kind,
+            @RequestPart("oldAvatar") String oldAvatar,
+            @RequestHeader(value = USER_NAME) String userName) throws IOException {
         System.out.println("修改头像开始，上传图片"+name+kind+"====="+files.getName()+files.getSize()+files.getOriginalFilename()+" oldAvatar is "+oldAvatar);
 
         //判断文件是否为空
@@ -298,6 +317,8 @@ public class PictureController {
         }
         else if(kind.equals("set")){
             pictureSetService.updateAvatar(name,newName);
+            //保存操作的信息
+            setOperationService.createOperation(name,userName,"修改了头像");
         }
 
 
